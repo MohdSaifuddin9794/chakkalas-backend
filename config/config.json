@@ -1,0 +1,15 @@
+{
+    "development": {
+      "Webserver": {
+        "clientPath": "http://localhost:3000",
+        "serverPath": "http://localhost:3001"
+      }
+    },
+    "production": {
+      "Webserver": {
+        "clientPath": "https://youwebsite.com",
+        "serverPath": "https://yourwebsite.com"
+      }
+    }
+  }
+  
