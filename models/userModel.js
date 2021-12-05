@@ -22,8 +22,10 @@ export const userSchema = new mongoose.Schema({
     password: {
         type: String,
         trim: true,
+        unique: true,
         minlength: [8, 'please enter your password 8 characters or above'],
-        maxlength: [16, 'please enter your password 16 characters or below'],
+        maxlength: [16, 'please enter your password 16 characters or below']
+      
     },
     passwordConfirm: {
         type: String,
@@ -40,12 +42,12 @@ export const userSchema = new mongoose.Schema({
     photo: String,
     photoCover: String,
     passwordCreateAt: Date,
-    passwordRestToken: String,
-    passwordResetTokenExpires: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
     active: {
         type: Boolean,
         default: true,
-        select: true
+        select: false
     }
 }) 
 
@@ -81,7 +83,28 @@ userSchema.methods.correctPassword = async function(
     {
  return bcrypt.compare(cadidatePassword, userPassword)
 }
-userSchema.methods.changedPasswordAt
+userSchema.methods.changedPasswordAfter = function( JWTTimestamp) {
+ if(this.passwordChangedAt){
+     const changedTimestamp = parseInt(
+         this.passwordChangedAt.getTime() / 1000,
+          10
+          )
+          return JWTTimestamp < changedTimestamp
+ }
+ return false;
+}
+
+userSchema.methods.createPasswordResetToken = function() {
+  const resetToken =  crypto.randomBytes(32).toString('hex')
+  this.passwordResetToken = crypto
+  .createHash('sha256')
+  .update(resetToken)
+  .digest('hex')
+
+  this.passwordTokenExpires = Date.now() + 10 * 60 * 1000
+
+  return resetToken
+}
 export default mongoose.model('User', userSchema);
 
 

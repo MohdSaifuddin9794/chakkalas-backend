@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import helmet from 'helmet';
+import cors from 'cors';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const socket = require('socket.io');

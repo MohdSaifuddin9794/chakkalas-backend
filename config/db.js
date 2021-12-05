@@ -9,8 +9,8 @@ export const mongoConnect = async () => {
     await mongoose.connect(DB, {
       useUnifiedTopology: true,
       useNewUrlParser: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
+      // useCreateIndex: true,
+      // useFindAndModify: false,
     });
     console.log('Connected to Mongo database');
   } catch (e) {
